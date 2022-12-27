@@ -1,4 +1,73 @@
-from .run import run
+from monitor_rtl433 import run
+from monitor_rtl433.metrics import Metric, MetricFilter, MetricDescription
+
+def degc2f(x):
+    return x * 9.0/5.0 + 32.0
+
+def km2mi(x):
+    return x * 0.62137
+
+
+class AcuriteTower(MetricFilter):
+    def __init__(self, id):
+        self.id = id
+        # The `_match` property will be used to determine which sensor records
+        # this filter will be applied to
+        self._match = {"model": "Acurite-Tower", "id" : self.id}
+        
+    def process(self, reading):
+        """Takes a single sensor record, and converts it to 0 or more metrics
+        """
+        sensor_id = "%s" % str(self.id) 
+        yield Metric('temperature', degc2f(reading['temperature_C']), labels={'sensor_id': sensor_id})
+        yield Metric('humidity', reading['humidity'], labels={'sensor_id': sensor_id})
+        yield Metric('battery_ok', reading['battery_ok'], labels={'sensor_id': sensor_id})
+
+class Acurite5n1(MetricFilter):
+    def __init__(self, id):
+        self.id = id
+        self._match = {"model": "Acurite-5n1", "message_type": 56 ,"id": self.id}
+
+    def process(self, reading):
+        sensor_id = "%s" % str(self.id)
+        
+        yield Metric('temperature', reading['temperature_F'], labels={'sensor_id': sensor_id})
+        yield Metric('humidity', reading['humidity'], labels={'sensor_id': sensor_id})
+        yield Metric('battery_ok', reading['battery_ok'], labels={'sensor_id': sensor_id})
+
+class Acurite5n1_windnrain(MetricFilter):
+    def __init__(self, id):
+        self.id = id
+        self._match = {"model": "Acurite-5n1", "message_type": 49 ,"id": self.id}
+
+    def process(self, reading):
+        sensor_id = "%s" % str(self.id)
+        
+        yield Metric('wind_avg_mph', km2mi(reading['wind_avg_km_h']), labels={'sensor_id': sensor_id})
+        yield Metric('wind_dir_deg', reading['wind_dir_deg'], labels={'sensor_id': sensor_id})
+        yield Metric('rain_in', reading['rain_in'], labels={'sensor_id': sensor_id})
+
+
+def main():
+    # List all metric names that we will expose
+    metric_descriptions = [
+        MetricDescription("temperature", "gauge", "Temperature in degrees F"),
+        MetricDescription("humidity", "gauge", "Relative humidity in percent"),
+        MetricDescription("battery_ok", "gauge", "1 when battery normal, 0 when low"),
+        MetricDescription("wind_avg_mph", "gauge", "Average wind speed in mph"),
+        MetricDescription("wind_dir_deg", "gauge", "Wind direction in degrees"),
+        MetricDescription("rain_in", "counter", "Rain accumulation in inches"),
+    ]
+    # For each sensor that we want to convert to metrics, create a MetricFilter class that will do that
+    metric_filters = [
+        Acurite5n1(2468),
+        Acurite5n1_windnrain(2468),
+        AcuriteTower(11825),
+        AcuriteTower(3209),
+        AcuriteTower(3935),
+    ]
+
+    run(metric_descriptions, metric_filters)
 
 if __name__ == '__main__':
-    run()
+    main()
