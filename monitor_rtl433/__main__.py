@@ -19,8 +19,8 @@ class AcuriteTower(MetricFilter):
         """Takes a single sensor record, and converts it to 0 or more metrics
         """
         sensor_id = "%s" % str(self.id) 
-        yield Metric('temperature', degc2f(reading['temperature_C']), labels={'sensor_id': sensor_id})
-        yield Metric('humidity', reading['humidity'], labels={'sensor_id': sensor_id})
+        yield Metric('temperature_F', degc2f(reading['temperature_C']), labels={'sensor_id': sensor_id})
+        yield Metric('humidity_percent', reading['humidity'], labels={'sensor_id': sensor_id})
         yield Metric('battery_ok', reading['battery_ok'], labels={'sensor_id': sensor_id})
 
 class Acurite5n1(MetricFilter):
@@ -31,8 +31,8 @@ class Acurite5n1(MetricFilter):
     def process(self, reading):
         sensor_id = "%s" % str(self.id)
         
-        yield Metric('temperature', reading['temperature_F'], labels={'sensor_id': sensor_id})
-        yield Metric('humidity', reading['humidity'], labels={'sensor_id': sensor_id})
+        yield Metric('temperature_F', reading['temperature_F'], labels={'sensor_id': sensor_id})
+        yield Metric('humidity_percent', reading['humidity'], labels={'sensor_id': sensor_id})
         yield Metric('battery_ok', reading['battery_ok'], labels={'sensor_id': sensor_id})
 
 class Acurite5n1_windnrain(MetricFilter):
@@ -51,8 +51,8 @@ class Acurite5n1_windnrain(MetricFilter):
 def main():
     # List all metric names that we will expose
     metric_descriptions = [
-        MetricDescription("temperature", "gauge", "Temperature in degrees F"),
-        MetricDescription("humidity", "gauge", "Relative humidity in percent"),
+        MetricDescription("temperature_F", "gauge", "Temperature in degrees F"),
+        MetricDescription("humidity_percent", "gauge", "Relative humidity in percent"),
         MetricDescription("battery_ok", "gauge", "1 when battery normal, 0 when low"),
         MetricDescription("wind_avg_mph", "gauge", "Average wind speed in mph"),
         MetricDescription("wind_dir_deg", "gauge", "Wind direction in degrees"),
