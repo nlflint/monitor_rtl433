@@ -11,7 +11,7 @@ def sanitize_sensor_record(r):
     return r2
 
 class SensorDatabase(object):
-    HASH_KEYS = ['model', 'id', 'channel']
+    HASH_KEYS = ['model', 'id', 'channel', 'message_type']
 
     def __init__(self):
         self.sensors = {}
