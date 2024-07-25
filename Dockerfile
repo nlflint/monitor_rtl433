@@ -4,7 +4,7 @@ RUN apt update && apt install -y \
     rtl-433 \
     git
 
-RUN git clone https://github.com/mcbridejc/monitor_rtl433.git /monitor_rtl433
+RUN git clone https://github.com/nlflint/monitor_rtl433.git /monitor_rtl433
 WORKDIR /monitor_rtl433
 RUN pip3 install .
 

@@ -9,7 +9,7 @@ class AcuriteTower(MetricFilter):
         self.id = id
         # The `_match` property will be used to determine which sensor records
         # this filter will be applied to
-        self._match = {"model": "Acurite tower sensor", "id" : self.id}
+        self._match = {"model": "Acurite-Tower", "id" : self.id}
         
     def process(self, r):
         """Takes a single sensor record, and converts it to 0 or more metrics
@@ -43,12 +43,13 @@ def main():
     metric_descriptions = [
         MetricDescription("temperature", "gauge", "Temperature in degrees F"),
         MetricDescription("humidity", "gauge", "Relative humidity in percent"),
-        MetricDescription("battery_warning", "gauge", "0 when battery normal, 1 when low"),
+        MetricDescription("battery_ok", "gauge", "0 when battery normal, 1 when low"),
     ]
     # For each sensor that we want to convert to metrics, create a MetricFilter class that will do that
     metric_filters = [
-        AcuriteTower(15352),
-        LaCrosse(158),
+        AcuriteTower(11825),
+        AcuriteTower(3209),
+        AcuriteTower(3935),
     ]
 
     run(metric_descriptions, metric_filters)

@@ -23,6 +23,20 @@ class AcuriteTower(MetricFilter):
         yield Metric('humidity_percent', reading['humidity'], labels={'sensor_id': sensor_id})
         yield Metric('battery_ok', reading['battery_ok'], labels={'sensor_id': sensor_id})
 
+class Unni(MetricFilter):
+    def __init__(self, id):
+        self.id = id
+        self._match = {"model": "Oregon-THG810", "id" : self.id}
+        
+    def process(self, reading):
+        """Takes a single sensor record, and converts it to 0 or more metrics
+        """
+        sensor_id = "%s" % str(self.id) 
+        yield Metric('temperature_C', reading['temperature_C'], labels={'sensor_id': sensor_id})
+        yield Metric('humidity', reading['humidity'], labels={'sensor_id': sensor_id})
+        yield Metric('battery_ok', reading['battery_ok'], labels={'sensor_id': sensor_id})
+
+
 class Acurite5n1(MetricFilter):
     def __init__(self, id):
         self.id = id
@@ -65,6 +79,9 @@ def main():
         AcuriteTower(11825),
         AcuriteTower(3209),
         AcuriteTower(3935),
+        Unni(196),
+        Unni(126),
+        Unni(98),
     ]
 
     run(metric_descriptions, metric_filters)
