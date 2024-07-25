@@ -20,7 +20,7 @@ class AcuriteTower(MetricFilter):
         """
         sensor_id = "%s" % str(self.id) 
         yield Metric('temperature_F', degc2f(reading['temperature_C']), labels={'sensor_id': sensor_id})
-        yield Metric('humidity_percent', reading['humidity'], labels={'sensor_id': sensor_id})
+        yield Metric('humidity', reading['humidity'], labels={'sensor_id': sensor_id})
         yield Metric('battery_ok', reading['battery_ok'], labels={'sensor_id': sensor_id})
 
 class Unni(MetricFilter):
