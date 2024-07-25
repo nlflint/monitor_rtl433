@@ -26,13 +26,13 @@ class AcuriteTower(MetricFilter):
 class Unni(MetricFilter):
     def __init__(self, id):
         self.id = id
-        self._match = {"model": "Oregon-THG810", "id" : self.id}
+        self._match = {"model": "Oregon-THGR810", "id" : self.id}
         
     def process(self, reading):
         """Takes a single sensor record, and converts it to 0 or more metrics
         """
         sensor_id = "%s" % str(self.id) 
-        yield Metric('temperature_C', reading['temperature_C'], labels={'sensor_id': sensor_id})
+        yield Metric('temperature_F', degc2f(reading['temperature_C']), labels={'sensor_id': sensor_id})
         yield Metric('humidity', reading['humidity'], labels={'sensor_id': sensor_id})
         yield Metric('battery_ok', reading['battery_ok'], labels={'sensor_id': sensor_id})
 
