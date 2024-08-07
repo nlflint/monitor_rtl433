@@ -43,7 +43,7 @@ class Acurite5n1(MetricFilter):
         self._match = {"model": "Acurite-5n1", "message_type": 56 ,"id": self.id}
 
     def process(self, reading):
-        sensor_id = "%s" % str(self.id)
+        sensor_id = "2468"
         
         yield Metric('temperature_F', reading['temperature_F'], labels={'sensor_id': sensor_id})
         yield Metric('humidity_percent', reading['humidity'], labels={'sensor_id': sensor_id})
@@ -74,7 +74,7 @@ def main():
     ]
     # For each sensor that we want to convert to metrics, create a MetricFilter class that will do that
     metric_filters = [
-        Acurite5n1(2468),
+        Acurite5n1(1226),
         Acurite5n1_windnrain(1226),
         AcuriteTower(11825),
         AcuriteTower(3209),
