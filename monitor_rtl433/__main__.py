@@ -77,7 +77,7 @@ def main():
         Acurite5n1(1226),
         Acurite5n1_windnrain(1226),
         AcuriteTower(11825),
-        AcuriteTower(3209),
+        AcuriteTower(710),
         AcuriteTower(3935),
         Unni(196),
         Unni(126),
