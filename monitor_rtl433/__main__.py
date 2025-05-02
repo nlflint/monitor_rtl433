@@ -9,8 +9,9 @@ def km2mi(x):
 
 
 class AcuriteTower(MetricFilter):
-    def __init__(self, id):
+    def __init__(self, id, report_id):
         self.id = id
+        self.report_id = report_id
         # The `_match` property will be used to determine which sensor records
         # this filter will be applied to
         self._match = {"model": "Acurite-Tower", "id" : self.id}
@@ -18,7 +19,7 @@ class AcuriteTower(MetricFilter):
     def process(self, reading):
         """Takes a single sensor record, and converts it to 0 or more metrics
         """
-        sensor_id = "%s" % str(self.id) 
+        sensor_id = "%s" % str(self.report_id) 
         yield Metric('temperature_F', degc2f(reading['temperature_C']), labels={'sensor_id': sensor_id})
         yield Metric('humidity_percent', reading['humidity'], labels={'sensor_id': sensor_id})
         yield Metric('battery_ok', reading['battery_ok'], labels={'sensor_id': sensor_id})
@@ -76,9 +77,9 @@ def main():
     metric_filters = [
         Acurite5n1(1226),
         Acurite5n1_windnrain(1226),
-        AcuriteTower(11825),
-        AcuriteTower(710),
-        AcuriteTower(3935),
+        AcuriteTower(11825, 11825),
+        AcuriteTower(710, 3209),
+        AcuriteTower(3935, 3935),
         Unni(196),
         Unni(126),
         Unni(98),
