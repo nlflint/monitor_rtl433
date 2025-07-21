@@ -75,8 +75,8 @@ def main():
     ]
     # For each sensor that we want to convert to metrics, create a MetricFilter class that will do that
     metric_filters = [
-        Acurite5n1(1226),
-        Acurite5n1_windnrain(1226),
+        Acurite5n1(223),
+        Acurite5n1_windnrain(223),
         AcuriteTower(11825, 11825),
         AcuriteTower(710, 3209),
         AcuriteTower(3935, 3935),
