@@ -77,7 +77,7 @@ def main():
     metric_filters = [
         Acurite5n1(223),
         Acurite5n1_windnrain(223),
-        AcuriteTower(11825, 11825),
+        AcuriteTower(15753, 11825),
         AcuriteTower(710, 3209),
         AcuriteTower(3935, 3935),
         Unni(196),
